@@ -12,30 +12,23 @@
       <option value="designer">Web Designer</option>
     </select>
 
+    <label>Skills:</label>
+    <input type="text" v-model="tempSkill" @keyup.ctrl="addSkill">
+    <div v-for="skill in skills" :key="skill" class="pill">
+      <span @click="deleteSkill(skill)">{{ skill }}</span>
+    </div>
+
     <div class="terms">
       <input type="checkbox" v-model="terms" required>
       <label>Accept terms and conditions</label>
     </div>
 
-    <div>
-      <input type="checkbox" value="Han" v-model="names">
-      <label>Han</label>
-    </div>
-    <div>
-      <input type="checkbox" value="So" v-model="names">
-      <label>SO</label>
-    </div>
-    <div>
-      <input type="checkbox" value="Lo" v-model="names">
-      <label>LO</label>
-    </div>
   </form>
 
   <p>email: {{ email }}</p>
   <p>password: {{ password }}</p>
   <p>role: {{ role }}</p>
   <p>terms: {{ terms }}</p>
-  <p>names: {{ names }}</p>
 </template>
 
 <script>
@@ -46,7 +39,24 @@ export default {
       password: '',
       role: '',
       terms: false,
-      names: []
+      tempSkill: '',
+      skills: []
+    }
+  },
+  methods: {
+    addSkill(e) {
+      console.log(e);
+      if (e.key === ',' && this.tempSkill) {
+        if (!this.skills.includes(this.tempSkill)) {
+          this.skills.push(this.tempSkill)
+        }
+        this.tempSkill = ''
+      }
+    },
+    deleteSkill(skill) {
+      this.skills = this.skills.filter((item) => {
+        return skill !== item
+      })
     }
   }
 }
@@ -85,5 +95,17 @@ export default {
     margin: 0 10px 0 0;
     position: relative;
     top: 2px;
+  }
+  .pill {
+    display: inline-block;
+    margin: 20px 10px 0 0;
+    padding: 6px 12px;
+    background: #eee;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
   }
 </style>
